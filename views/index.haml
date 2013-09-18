@@ -1,0 +1,134 @@
+
+%form{ :id => 'find', :action => '/' }
+  %input{ :class => "findbox",:type => "text", :name => "search", :placeholder => "Enter name or extension" }
+
+
+#results
+
+:javascript
+  /* give the search field the focus on page load */
+  document.forms['find'].elements['search'].focus();
+
+  /* idle timer to reload page after 3 mins */
+  idleTime = 0;
+  $(document).ready(function () {
+      //Increment the idle time counter every minute.
+      var idleInterval = setInterval("timerIncrement()", 60000); // 1 minute
+
+      //Zero the idle timer on mouse movement.
+      $(this).mousemove(function (e) {
+          idleTime = 0;
+      });
+      $(this).keypress(function (e) {
+          idleTime = 0;
+      });
+  })
+
+  function timerIncrement() {
+      idleTime = idleTime + 1;
+      if (idleTime > 2 ) { // 3 minutes
+          location.reload();
+      }
+  }
+  
+  /* create global array to store extensions */
+  extns = [];
+
+  $("#find").submit(function(event) {
+   
+    /* stop form from submitting normally */
+    event.preventDefault();
+
+    /* the length of text in the search box needs to be > 2 */
+    if ($('input[name="search"]').val().length > 2) {
+
+      /* get some values from elements on the page: */
+      var $form = $( this ),
+          term = $form.find( 'input[name="search"]' ).val(),
+          url = $form.attr( 'action' );
+     
+      /* Send the data using post */
+      var posting = $.post( '/search', JSON.stringify({ "term": term }), null, "json" );
+     
+      /* Put the results in a div */
+      posting.done(function( data ) {
+        $("#results").empty()
+        extns = [];
+        $(data).each(function(index) {
+            $("#results").append( format_card(this.user.extension,this.user.name) );
+            extns.push(this.user.extension);
+          });
+      });
+    }
+    else {
+      extns = [];
+    };
+  });
+
+  /* a delay function so searching doesn't fire immediately */
+  var delay = (function () {
+      var timer = 0;
+      return function (callback, ms) {
+          clearTimeout(timer);
+          timer = setTimeout(callback, ms);
+      };
+  })();
+
+  /* start searching half second after key is pressed */
+  $('input').keyup(function() {
+      delay(function(){
+        $("#find").submit();
+      }, 500 );
+  });
+
+  /* format data for json */
+  function extn_req(arr) {
+    var hsh = new Object(); 
+    for(i = 0; i < arr.length; i++) {
+      extn = arr[i];
+      hsh[extn] = "";
+    };
+    return {"extns": hsh };
+  };
+
+  function format_card(extn,name) {
+    return "<div class=\"card\"> <div class=\"ext\">" + extn + "</div> <div class=\"details\"> <div class=\"name\">" + name + "</div> <div class=\"status\" id=\"" + extn + "\"> </div> </div> </div>";
+  };
+
+  function format_status(text) {
+    colour = "red";
+    if (text == "idle") { colour = "green"; };
+    status_str = format_status_str(text);
+    return "<div class=\"" + colour +" dot\"> </div> <div class=\"status_text\">" + status_str + "</div>";
+  };
+
+  function format_status_str(text) {
+    x = text.replace("_", " ");
+    first = text.charAt(0).toUpperCase();
+    result = first.concat(x.slice(1,10000));
+    return result;
+  };
+
+  /* update extn status every two seconds */
+  var auto_refresh = setInterval(
+  function ()
+  {
+    if (extns.length > 0) {
+      str = JSON.stringify( extn_req(extns) );
+      var statuses = $.post( '/status', str, null, "json" );
+      statuses.done( function(data) {
+        $.each(data.extns, function(key,val) {
+          $("#" + key).empty().append( format_status(val) );
+        });
+      });
+    };
+  }, 2000); // refresh every 2000 milliseconds
+
+
+
+  
+
+
+
+
+

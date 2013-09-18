@@ -1,0 +1,79 @@
+body {
+  font-family: 'Open Sans', sans-serif;
+}
+
+input[type="text"]
+{
+  font-family: 'Open Sans', sans-serif;
+  font-size:24px;
+}
+
+.findbox {
+  display: block;
+  margin: 10px;
+  width: 300px;
+}
+
+.card {
+  clear: both;
+  border: 0px solid ;
+  border-radius: 10px;
+  width: 300px;
+  height: 50px;
+  padding: 10px;
+  margin: 10px;
+  background: #335A9A;
+}
+
+.ext {
+  float: left;
+  width: 70px;
+  height: 50px;
+  border-right: 1px solid #C2B999;
+  text-align: center;
+  line-height: 50px;
+  color: #EDEBD6;
+  font-weight: 800;
+  font-size: 18pt;
+}
+
+.details {
+  width: 220px;
+  position: relative; 
+  top: 0px; 
+  padding-left: 80px;
+  vertical-align: middle;
+}
+
+.name {
+  color: #EDEBD6;
+}
+
+.status {
+  color: #EDEBD6;
+  clear: both;
+}
+
+.status_text {
+  position: absolute;
+  top: 25px;
+  left: 105px;
+}
+
+.dot {
+  position: absolute;
+  top: 25px;
+  width: 15px;
+  height: 15px;
+  margin-right: 5px;
+  border: 2px solid #EDEBD6;
+  border-radius: 50%;
+}
+
+.green {
+  background-color: #33FF00;
+}
+
+.red {
+  background-color: #E80000;
+}

@@ -1,0 +1,11 @@
+ast_server: "10.10.10.10"
+ast_port:   5038
+ast_user:   "ami_username"
+ast_pass:   "secret"
+mysql:
+  adapter:  "mysql2"
+  host:     "10.10.10.10"
+  username: "mysql_username"
+  password: "secret"
+  database: "asterisk"
+
