@@ -27,4 +27,8 @@ Use of this application is at your own risk.
 * Copy or rename `config.yml.EXAMPLE` to `config.yml` and then enter the correct details in the file. 
 * If you don't have it already then install bundler by running `gem install bundler`.
 * Now run `bundle install` and this will install all the required gems.
-* Set up your chosen web server so it can serve up this application. This [page](http://recipes.sinatrarb.com/p/deployment?#article) may help. 
+* Set up your chosen web server so it can serve up this application. This [page](http://recipes.sinatrarb.com/p/deployment?#article) may help.
+
+### Exclusions
+
+You can configure this directory tool to hide some extension numbers from the directory. You might do this if you want to exclude certain numbers from search results, such as fax machines or senior management staff. See the file `config.yml.EXAMPLE` for an example of how this works. If you don't want to exclude any numbers then simply delete the entire `exclusions:` section.  

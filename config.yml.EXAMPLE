@@ -8,4 +8,7 @@ mysql:
   username: "mysql_username"
   password: "secret"
   database: "asterisk"
+exclusions:
+  - 12345
+  - 12346
 
